@@ -26,7 +26,6 @@ var cashRegister = {
 
 				// add item to bill
 				this.bill[itemName] = {name: itemName, quantity: quantity};
-				// console.log("this was just added to the bill:" + " " + this.bill[itemName]["quantity"] + " " + this.bill[itemName]["name"]);
 
 				console.log("Cost of last items added: " + this.lastItemCost);
 			};
