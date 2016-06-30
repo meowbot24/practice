@@ -12,7 +12,7 @@
 var cashRegister = {
 	total: 0,
 	lastItemCost: 0,
-	bill: {},
+	bill: {}, // adding bill
 
 	// add to cash register total, taking in name of item & quantity
 	add: function(itemName, quantity) {
