@@ -6,7 +6,7 @@
 
 // DONE add new items
 
-// print out receipt
+// print out receipt - almost done! have to remove items & quantity from bill for 2 voiding functions
 
 
 var cashRegister = {
