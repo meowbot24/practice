@@ -12,6 +12,7 @@
 var cashRegister = {
 	total: 0,
 	lastItemCost: 0,
+	bill: {},
 
 	// add to cash register total, taking in name of item & quantity
 	add: function(itemName, quantity) {
@@ -22,6 +23,10 @@ var cashRegister = {
 				console.log(itemList[x]["name"]);
 				this.lastItemCost = itemList[x]["price"] * quantity;
 				this.total += this.lastItemCost;
+
+				// add item to bill
+				this.bill[itemName] = {name: itemName, quantity: quantity};
+				// console.log("this was just added to the bill:" + " " + this.bill[itemName]["quantity"] + " " + this.bill[itemName]["name"]);
 
 				console.log("Cost of last items added: " + this.lastItemCost);
 			};
@@ -45,6 +50,12 @@ var cashRegister = {
 	staffDiscount: function(discount) {
 		this.total *= ((100 - discount)/100);
 		console.log("Your staff discount of " + discount + "% has been applied.");
+	},
+
+	printBill: function() {
+		for (var x in this.bill) {
+			console.log("Item: " + this.bill[x]["name"] + " Quantity: " + this.bill[x]["quantity"]);
+		};
 	}	
 
 };
@@ -94,4 +105,6 @@ console.log("Your total is: " + cashRegister.total); // log total
 cashRegister.staffDiscount(20); // 20% staff discount
 
 console.log("Your total is: " + cashRegister.total); // log total
+
+cashRegister.printBill(); // print all items and quantities added to total
 
