@@ -92,5 +92,6 @@ while (userChoice === computerChoice) {
 	compare(userChoice, computerChoice);
 };
 
-// next to do: get rid of repetitive code in last while loop mao mao
+// next to do: get rid of repetitive code in last while loop 
+// pr change
 
