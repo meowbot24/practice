@@ -42,6 +42,24 @@ var cashRegister = {
 			if (itemName === itemList[x]["name"]) {
 				this.total -= ( itemList[x]["price"] * quantity );
 				console.log(quantity + " " + itemList[x]["name"] + " has been voided.");
+
+				// remove from bill
+				for (var y in this.bill) {
+					if (itemList[x]["name"] === this.bill[y]["name"]) {
+
+						// validate and/or subtract void quantity from bill
+						if (quantity > this.bill[y]["quantity"]) {
+							console.log("THe void quantity exceeds the purchased quantity!");
+						} else if (quantity === this.bill[y]["quantity"]) {
+							console.log("This item has been removed from the bill: " + this.bill[y]["name"]);
+							delete this.bill[y];
+						} else {
+							this.bill[y]["quantity"] -= quantity;
+							console.log(quantity + " " + this.bill[y]["name"] + " has been removed from the bill.");
+						};					
+
+					};
+				};
 			};
 		};
 	},
@@ -52,6 +70,7 @@ var cashRegister = {
 	},
 
 	printBill: function() {
+		console.log("Here is your bill:");
 		for (var x in this.bill) {
 			console.log("Item: " + this.bill[x]["name"] + " Quantity: " + this.bill[x]["quantity"]);
 		};
@@ -90,18 +109,18 @@ addNewItem("popcorn",5);
 
 cashRegister.add("milk",6); // add 6 milk to total
 
-cashRegister.voidLastItem(); // void 6 milk
+// cashRegister.voidLastItem(); // void 6 milk
 
 cashRegister.add("kitty food",2); // add 2 kitty food to total
 
 cashRegister.voidItem("kitty food",1); // void 1 kitty food 
 
-cashRegister.add("popcorn",4);
-cashRegister.add("candy",3);
+// cashRegister.add("popcorn",4);
+// cashRegister.add("candy",3);
 
-console.log("Your total is: " + cashRegister.total); // log total
+// console.log("Your total is: " + cashRegister.total); // log total
 
-cashRegister.staffDiscount(20); // 20% staff discount
+// cashRegister.staffDiscount(20); // 20% staff discount
 
 console.log("Your total is: " + cashRegister.total); // log total
 
