@@ -12,10 +12,16 @@
 var cashRegister = {
 	total: 0,
 	lastItemCost: 0,
+	lastItemName: "",
+	lastItemQuantity: 0,
 	bill: {},
 
 	// add to cash register total, taking in name of item & quantity
 	add: function(itemName, quantity) {
+
+		// keep track of what the last item and quantity was for bill
+		this.lastItemName = itemName;
+		this.lastItemQuantity = quantity;
 
 		// looping through itemList to match name to find price & add to total
 		for (var x in itemList) {
@@ -27,14 +33,23 @@ var cashRegister = {
 				// add item to bill
 				this.bill[itemName] = {name: itemName, quantity: quantity};
 
-				console.log("Cost of last items added: " + this.lastItemCost);
+				console.log("Added item: " + this.lastItemName + ", quantity: " + this.lastItemQuantity);
 			};
 		};
 	},
 
 	voidLastItem: function() {
 		this.total -= this.lastItemCost;
-		console.log("The last item has been voided, totalling: " + this.lastItemCost);
+
+		// delete last scanned item & quantity from the bill
+		// how to ensure it's the last instance of the scanned item & quantity?
+		// if the same item & quantity was scanned twice, this would delete all instances
+		for (var x in this.bill) {
+			if ( (this.lastItemName === this.bill[x]["name"]) && (this.lastItemQuantity === this.bill[x]["quantity"]) ) {
+				console.log("Voiding the last item, with name: " + this.bill[x]["name"] + ", quantity: " + this.bill[x]["quantity"]);
+				delete this.bill[x];
+			} 
+		};
 	},
 
 	voidItem: function(itemName, quantity) {
@@ -49,7 +64,7 @@ var cashRegister = {
 
 						// validate and/or subtract void quantity from bill
 						if (quantity > this.bill[y]["quantity"]) {
-							console.log("THe void quantity exceeds the purchased quantity!");
+							console.log("The void quantity exceeds the purchased quantity!");
 						} else if (quantity === this.bill[y]["quantity"]) {
 							console.log("This item has been removed from the bill: " + this.bill[y]["name"]);
 							delete this.bill[y];
@@ -109,11 +124,11 @@ addNewItem("popcorn",5);
 
 cashRegister.add("milk",6); // add 6 milk to total
 
-// cashRegister.voidLastItem(); // void 6 milk
+cashRegister.voidLastItem(); // void 6 milk
 
 cashRegister.add("kitty food",2); // add 2 kitty food to total
 
-cashRegister.voidItem("kitty food",1); // void 1 kitty food 
+// cashRegister.voidItem("kitty food",1); // void 1 kitty food 
 
 // cashRegister.add("popcorn",4);
 // cashRegister.add("candy",3);
