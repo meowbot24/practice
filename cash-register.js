@@ -6,7 +6,12 @@
 
 // DONE add new items
 
-// print out receipt - almost done! have to remove items & quantity from bill for 2 voiding functions
+// DONE print out bill
+
+// DONE modify void functions to account for bill
+
+// re-organze bill to have running totals for each type of item, rather than store each instance of the same item separately
+
 
 
 var cashRegister = {
@@ -14,7 +19,9 @@ var cashRegister = {
 	lastItemCost: 0,
 	lastItemName: "",
 	lastItemQuantity: 0,
-	bill: {},
+	bill: {
+		// milk: {name: "milk", quantity: 0}
+	},
 
 	// add to cash register total, taking in name of item & quantity
 	add: function(itemName, quantity) {
@@ -26,16 +33,50 @@ var cashRegister = {
 		// looping through itemList to match name to find price & add to total
 		for (var x in itemList) {
 			if (itemName === itemList[x]["name"]) {
-				console.log(itemList[x]["name"]);
+				console.log(itemList[x]["name"] + ", " + quantity);
 				this.lastItemCost = itemList[x]["price"] * quantity;
 				this.total += this.lastItemCost;
 
-				// add item to bill
-				this.bill[itemName] = {name: itemName, quantity: quantity};
-
-				console.log("Added item: " + this.lastItemName + ", quantity: " + this.lastItemQuantity);
 			};
 		};
+
+		// add item to bill
+
+		// check if item exists on bill
+
+		var billItemCheck = false;
+
+		for (var m in this.bill) {
+			if (itemName === this.bill[m]["name"]) {
+				console.log(itemName + " exists on the bill.");
+				billItemCheck = true;
+			} else {					
+				console.log(itemName + " does not exist on the bill");
+			};
+
+		};
+
+		console.log("Value of billItemCheck is: " + billItemCheck);
+
+
+		// add item or quantity to bill depending on if item is already on bill
+		
+		if (billItemCheck) {
+			// add quantity
+			for (var n in this.bill) {
+				if (itemName === this.bill[n]["name"]) {
+					console.log("Quantity of " + itemName + " is currently " + this.bill[n]["quantity"]);
+					this.bill[n]["quantity"] += quantity;
+					console.log("Quantity of " + itemName + " is now " + this.bill[n]["quantity"]);
+				};
+			};
+
+		} else {
+			// add new object with item name and quantity
+			this.bill[itemName] = {name: itemName, quantity: quantity};
+			console.log(itemName + " has now been added to the bill with quantity: " + this.bill[itemName]["quantity"]);
+		};
+
 	},
 
 	voidLastItem: function() {
@@ -44,6 +85,7 @@ var cashRegister = {
 		// delete last scanned item & quantity from the bill
 		// how to ensure it's the last instance of the scanned item & quantity?
 		// if the same item & quantity was scanned twice, this would delete all instances
+		// should be resolved once bill running total is done
 		for (var x in this.bill) {
 			if ( (this.lastItemName === this.bill[x]["name"]) && (this.lastItemQuantity === this.bill[x]["quantity"]) ) {
 				console.log("Voiding the last item, with name: " + this.bill[x]["name"] + ", quantity: " + this.bill[x]["quantity"]);
@@ -122,13 +164,17 @@ addNewItem("popcorn",5);
 // 	console.log(itemList[x]["price"]);
 // };
 
+
 cashRegister.add("milk",6); // add 6 milk to total
 
-cashRegister.voidLastItem(); // void 6 milk
+// cashRegister.voidLastItem(); // void 6 milk
 
 cashRegister.add("kitty food",2); // add 2 kitty food to total
 
 // cashRegister.voidItem("kitty food",1); // void 1 kitty food 
+
+cashRegister.add("milk",4); // add 6 milk to total
+cashRegister.add("kitty food",2); // add 2 kitty food to total
 
 // cashRegister.add("popcorn",4);
 // cashRegister.add("candy",3);
