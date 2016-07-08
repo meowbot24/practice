@@ -10,18 +10,31 @@
 
 // DONE modify void functions to account for bill
 
-// re-organze bill to have running totals for each type of item, rather than store each instance of the same item separately
+// DONE re-configure bill to have running totals for each type of item, rather than store each instance of the same item separately
 
+// DONE fix void functions in respect to re-configured bill
 
+// make an app out of this!
+/*
+
+v1
+1. create index.html
+2. add a form for inputs: item & quantity
+3. outputs bill
+
+- input for staff discount
+- ability to add new items
+- void last transaction
+- void any item + quantity
+
+*/
 
 var cashRegister = {
 	total: 0,
 	lastItemCost: 0,
 	lastItemName: "",
 	lastItemQuantity: 0,
-	bill: {
-		// milk: {name: "milk", quantity: 0}
-	},
+	bill: {},
 
 	// add to cash register total, taking in name of item & quantity
 	add: function(itemName, quantity) {
@@ -48,15 +61,15 @@ var cashRegister = {
 
 		for (var m in this.bill) {
 			if (itemName === this.bill[m]["name"]) {
-				console.log(itemName + " exists on the bill.");
+				// console.log(itemName + " exists on the bill.");
 				billItemCheck = true;
 			} else {					
-				console.log(itemName + " does not exist on the bill");
+				// console.log(itemName + " does not exist on the bill");
 			};
 
 		};
 
-		console.log("Value of billItemCheck is: " + billItemCheck);
+		// console.log("Value of billItemCheck is: " + billItemCheck);
 
 
 		// add item or quantity to bill depending on if item is already on bill
@@ -65,16 +78,16 @@ var cashRegister = {
 			// add quantity
 			for (var n in this.bill) {
 				if (itemName === this.bill[n]["name"]) {
-					console.log("Quantity of " + itemName + " is currently " + this.bill[n]["quantity"]);
+					// console.log("Quantity of " + itemName + " is currently " + this.bill[n]["quantity"]);
 					this.bill[n]["quantity"] += quantity;
-					console.log("Quantity of " + itemName + " is now " + this.bill[n]["quantity"]);
+					// console.log("Quantity of " + itemName + " is now " + this.bill[n]["quantity"]);
 				};
 			};
 
 		} else {
 			// add new object with item name and quantity
 			this.bill[itemName] = {name: itemName, quantity: quantity};
-			console.log(itemName + " has now been added to the bill with quantity: " + this.bill[itemName]["quantity"]);
+			// console.log(itemName + " has now been added to the bill with quantity: " + this.bill[itemName]["quantity"]);
 		};
 
 	},
@@ -83,14 +96,15 @@ var cashRegister = {
 		this.total -= this.lastItemCost;
 
 		// delete last scanned item & quantity from the bill
-		// how to ensure it's the last instance of the scanned item & quantity?
-		// if the same item & quantity was scanned twice, this would delete all instances
-		// should be resolved once bill running total is done
+
 		for (var x in this.bill) {
-			if ( (this.lastItemName === this.bill[x]["name"]) && (this.lastItemQuantity === this.bill[x]["quantity"]) ) {
-				console.log("Voiding the last item, with name: " + this.bill[x]["name"] + ", quantity: " + this.bill[x]["quantity"]);
-				delete this.bill[x];
-			} 
+			if (this.lastItemName === this.bill[x]["name"]) {
+				if (this.bill[x]["quantity"] > this.lastItemQuantity) {
+					this.bill[x]["quantity"] -= this.lastItemQuantity;
+				} else {
+					delete this.bill[x];
+				};
+			};
 		};
 	},
 
@@ -167,13 +181,14 @@ addNewItem("popcorn",5);
 
 cashRegister.add("milk",6); // add 6 milk to total
 
-// cashRegister.voidLastItem(); // void 6 milk
-
 cashRegister.add("kitty food",2); // add 2 kitty food to total
 
 // cashRegister.voidItem("kitty food",1); // void 1 kitty food 
 
-cashRegister.add("milk",4); // add 6 milk to total
+cashRegister.add("milk",4); // add 4 milk to total
+
+cashRegister.voidLastItem(); // void 6 milk
+
 cashRegister.add("kitty food",2); // add 2 kitty food to total
 
 // cashRegister.add("popcorn",4);
@@ -182,6 +197,8 @@ cashRegister.add("kitty food",2); // add 2 kitty food to total
 // console.log("Your total is: " + cashRegister.total); // log total
 
 // cashRegister.staffDiscount(20); // 20% staff discount
+
+cashRegister.voidItem("kitty food", 3);
 
 console.log("Your total is: " + cashRegister.total); // log total
 
