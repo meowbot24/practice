@@ -30,143 +30,143 @@ v1
 */
 
 var cashRegister = {
-	total: 0,
-	lastItemCost: 0,
-	lastItemName: "",
-	lastItemQuantity: 0,
-	bill: {},
+  total: 0,
+  lastItemCost: 0,
+  lastItemName: "",
+  lastItemQuantity: 0,
+  bill: {},
 
-	// add to cash register total, taking in name of item & quantity
-	add: function(itemName, quantity) {
+  // add to cash register total, taking in name of item & quantity
+  add: function(itemName, quantity) {
 
-		// keep track of what the last item and quantity was for bill
-		this.lastItemName = itemName;
-		this.lastItemQuantity = quantity;
+    // keep track of what the last item and quantity was for bill
+    this.lastItemName = itemName;
+    this.lastItemQuantity = quantity;
 
-		// looping through itemList to match name to find price & add to total
-		for (var x in itemList) {
-			if (itemName === itemList[x]["name"]) {
-				console.log(itemList[x]["name"] + ", " + quantity);
-				this.lastItemCost = itemList[x]["price"] * quantity;
-				this.total += this.lastItemCost;
+    // looping through itemList to match name to find price & add to total
+    for (var x in itemList) {
+      if (itemName === itemList[x].name) {
+        console.log(itemList[x]["name"] + ", " + quantity);
+        this.lastItemCost = itemList[x]["price"] * quantity;
+        this.total += this.lastItemCost;
 
-			};
-		};
+      }
+    }
 
-		// add item to bill
+    // add item to bill
 
-		// check if item exists on bill
+    // check if item exists on bill
 
-		var billItemCheck = false;
+    var billItemCheck = false;
 
-		for (var m in this.bill) {
-			if (itemName === this.bill[m]["name"]) {
-				// console.log(itemName + " exists on the bill.");
-				billItemCheck = true;
-			} else {					
-				// console.log(itemName + " does not exist on the bill");
-			};
+    for (var m in this.bill) {
+      if (itemName === this.bill[m]["name"]) {
+        // console.log(itemName + " exists on the bill.");
+        billItemCheck = true;
+      } else {          
+        // console.log(itemName + " does not exist on the bill");
+      };
 
-		};
+    };
 
-		// console.log("Value of billItemCheck is: " + billItemCheck);
+    // console.log("Value of billItemCheck is: " + billItemCheck);
 
 
-		// add item or quantity to bill depending on if item is already on bill
-		
-		if (billItemCheck) {
-			// add quantity
-			for (var n in this.bill) {
-				if (itemName === this.bill[n]["name"]) {
-					// console.log("Quantity of " + itemName + " is currently " + this.bill[n]["quantity"]);
-					this.bill[n]["quantity"] += quantity;
-					// console.log("Quantity of " + itemName + " is now " + this.bill[n]["quantity"]);
-				};
-			};
+    // add item or quantity to bill depending on if item is already on bill
+    
+    if (billItemCheck) {
+      // add quantity
+      for (var n in this.bill) {
+        if (itemName === this.bill[n]["name"]) {
+          // console.log("Quantity of " + itemName + " is currently " + this.bill[n]["quantity"]);
+          this.bill[n]["quantity"] += quantity;
+          // console.log("Quantity of " + itemName + " is now " + this.bill[n]["quantity"]);
+        };
+      };
 
-		} else {
-			// add new object with item name and quantity
-			this.bill[itemName] = {name: itemName, quantity: quantity};
-			// console.log(itemName + " has now been added to the bill with quantity: " + this.bill[itemName]["quantity"]);
-		};
+    } else {
+      // add new object with item name and quantity
+      this.bill[itemName] = {name: itemName, quantity: quantity};
+      // console.log(itemName + " has now been added to the bill with quantity: " + this.bill[itemName]["quantity"]);
+    };
 
-	},
+  },
 
-	voidLastItem: function() {
-		this.total -= this.lastItemCost;
+  voidLastItem: function() {
+    this.total -= this.lastItemCost;
 
-		// delete last scanned item & quantity from the bill
+    // delete last scanned item & quantity from the bill
 
-		for (var x in this.bill) {
-			if (this.lastItemName === this.bill[x]["name"]) {
-				if (this.bill[x]["quantity"] > this.lastItemQuantity) {
-					this.bill[x]["quantity"] -= this.lastItemQuantity;
-				} else {
-					delete this.bill[x];
-				};
-			};
-		};
-	},
+    for (var x in this.bill) {
+      if (this.lastItemName === this.bill[x]["name"]) {
+        if (this.bill[x]["quantity"] > this.lastItemQuantity) {
+          this.bill[x]["quantity"] -= this.lastItemQuantity;
+        } else {
+          delete this.bill[x];
+        };
+      };
+    };
+  },
 
-	voidItem: function(itemName, quantity) {
-		for (var x in itemList) {
-			if (itemName === itemList[x]["name"]) {
-				this.total -= ( itemList[x]["price"] * quantity );
-				console.log(quantity + " " + itemList[x]["name"] + " has been voided.");
+  voidItem: function(itemName, quantity) {
+    for (var x in itemList) {
+      if (itemName === itemList[x]["name"]) {
+        this.total -= ( itemList[x]["price"] * quantity );
+        console.log(quantity + " " + itemList[x]["name"] + " has been voided.");
 
-				// remove from bill
-				for (var y in this.bill) {
-					if (itemList[x]["name"] === this.bill[y]["name"]) {
+        // remove from bill
+        for (var y in this.bill) {
+          if (itemList[x]["name"] === this.bill[y]["name"]) {
 
-						// validate and/or subtract void quantity from bill
-						if (quantity > this.bill[y]["quantity"]) {
-							console.log("The void quantity exceeds the purchased quantity!");
-						} else if (quantity === this.bill[y]["quantity"]) {
-							console.log("This item has been removed from the bill: " + this.bill[y]["name"]);
-							delete this.bill[y];
-						} else {
-							this.bill[y]["quantity"] -= quantity;
-							console.log(quantity + " " + this.bill[y]["name"] + " has been removed from the bill.");
-						};					
+            // validate and/or subtract void quantity from bill
+            if (quantity > this.bill[y]["quantity"]) {
+              console.log("The void quantity exceeds the purchased quantity!");
+            } else if (quantity === this.bill[y]["quantity"]) {
+              console.log("This item has been removed from the bill: " + this.bill[y]["name"]);
+              delete this.bill[y];
+            } else {
+              this.bill[y]["quantity"] -= quantity;
+              console.log(quantity + " " + this.bill[y]["name"] + " has been removed from the bill.");
+            };          
 
-					};
-				};
-			};
-		};
-	},
+          };
+        };
+      };
+    };
+  },
 
-	staffDiscount: function(discount) {
-		this.total *= ((100 - discount)/100);
-		console.log("Your staff discount of " + discount + "% has been applied.");
-	},
+  staffDiscount: function(discount) {
+    this.total *= ((100 - discount)/100);
+    console.log("Your staff discount of " + discount + "% has been applied.");
+  },
 
-	printBill: function() {
-		console.log("Here is your bill:");
-		for (var x in this.bill) {
-			console.log("Item: " + this.bill[x]["name"] + " Quantity: " + this.bill[x]["quantity"]);
-		};
-	}	
+  printBill: function() {
+    console.log("Here is your bill:");
+    for (var x in this.bill) {
+      console.log("Item: " + this.bill[x]["name"] + " Quantity: " + this.bill[x]["quantity"]);
+    };
+  } 
 
 };
 
 // creating object class for Items
 function Item(name, price) {
-	this.name = name;
-	this.price = price;
+  this.name = name;
+  this.price = price;
 };
 
 // object containing all items available for sale
 var itemList = {
-	milk: new Item("milk", 2.00),
-  	eggs: new Item("eggs", 3.00),
-  	chocolate: new Item("chocolate", 2.50),
-  	kittyFood: new Item("kitty food", 20.00)
+  milk: new Item("milk", 2.00),
+    eggs: new Item("eggs", 3.00),
+    chocolate: new Item("chocolate", 2.50),
+    kittyFood: new Item("kitty food", 20.00)
 };
 
 // add new items to itemList
 
 var addNewItem = function(name, price) {
-	itemList[name] = new Item(name,price);
+  itemList[name] = new Item(name,price);
 };
 
 addNewItem("candy",4);
@@ -174,8 +174,8 @@ addNewItem("popcorn",5);
 
 // // to view/log itemList
 // for (var x in itemList) {
-// 	console.log(itemList[x]["name"]);
-// 	console.log(itemList[x]["price"]);
+//  console.log(itemList[x]["name"]);
+//  console.log(itemList[x]["price"]);
 // };
 
 
