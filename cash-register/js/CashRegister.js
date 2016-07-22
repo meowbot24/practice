@@ -25,13 +25,7 @@ var cashRegister = {
 
     // check if item exists on bill
 
-    var billItemCheck = false;
-
-    for (var billItem in this.bill) {
-      if (itemName === this.bill[billItem].name) {
-        billItemCheck = true;
-      }
-    }
+    var billItemCheck = _.has(this.bill, itemName);
 
 
     // add item or quantity to bill depending on if item is already on bill
