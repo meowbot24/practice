@@ -106,4 +106,4 @@ var cashRegister = {
       console.log('Item: ' + this.bill[billItem].name + ' Quantity: ' + this.bill[billItem].quantity);
     }
   }
-}
+};
