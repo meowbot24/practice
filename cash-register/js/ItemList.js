@@ -11,6 +11,3 @@ var itemList = {
 var addNewItem = function(name, price) {
   itemList[name] = new Item(name,price);
 };
-
-addNewItem('candy',4);
-addNewItem('popcorn',5);

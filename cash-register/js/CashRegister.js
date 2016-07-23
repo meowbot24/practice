@@ -37,12 +37,10 @@ var cashRegister = {
           this.bill[billItem].quantity += quantity;
         }
       }
-
     } else {
       // add new object with item name and quantity
       this.bill[itemName] = {name: itemName, quantity: quantity};
     }
-
   },
 
   voidLastItem: function() {
