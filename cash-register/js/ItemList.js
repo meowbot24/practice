@@ -1,12 +1,7 @@
 angular.module('Item.services')
 	.factory('ItemList', function (Item) {
-		// object containing all items available for sale
-		var itemList = {
-			milk: new Item('milk', 2.00),
-			eggs: new Item('eggs', 3.00),
-			chocolate: new Item('chocolate', 2.50),
-			kittyFood: new Item('kitty food', 20.00)
-		};
+		// object to contain list of items for sale
+		var itemList = {};
 
 		// add new items to itemList
 

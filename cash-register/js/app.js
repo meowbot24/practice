@@ -3,8 +3,11 @@ angular.module('cashRegisterApp', [
 ]);
 
 function cashRegisterController($scope, Item, ItemList, cashRegister) {
-
 	// add new items to ItemList for sale
+	ItemList.addNewItem('milk', 2.00);
+	ItemList.addNewItem('eggs', 3.00);
+	ItemList.addNewItem('chocolate', 2.50);
+	ItemList.addNewItem('kitty food', 20.00);
 	ItemList.addNewItem('candy',4);
 	ItemList.addNewItem('popcorn',5);
 
